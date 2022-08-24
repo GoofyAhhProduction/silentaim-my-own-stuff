@@ -1,6 +1,6 @@
 -- this is the actual script that ure meant to execute for the lock / silent aim
 
-local Aiming = loadstring(game:HttpGet("https://raw.githubusercontent.com/zetaV1/silentaim-my-own-stuff/main/silentaim"))()
+local Aiming = loadstring(game:HttpGet("https://raw.githubusercontent.com/zetaV1/silentaim-my-own-stuff/main/source%20and%20config"))()
 Aiming.TeamCheck(false)
 
 local Workspace = game:GetService("Workspace")
