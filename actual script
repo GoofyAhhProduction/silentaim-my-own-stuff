@@ -35,20 +35,28 @@ function Aiming.Check()
     return true
 end
 
+-- //
+function DaHoodSettings.ApplyPredictionFormula(SelectedPart, Velocity)
+    return SelectedPart.CFrame + (Velocity * DaHoodSettings.Prediction)
+end
+
+-- // Hook
 local __index
 __index = hookmetamethod(game, "__index", function(t, k)
-    if (t:IsA("Mouse") and (k:lower() == "hit" or k:lower() == "target")) then
-        local SelectedPart = Aiming.SelectedPart
+    -- // Check if it's trying to get the mouse's hit or target and see if we can use it
+    if (t:IsA("Mouse") and (k:lower() == "hit" or k:lower() == "target") and Aiming.Check() and DaHoodSettings.SilentAim) then
+        -- // Variables
+        local selectedPart = Aiming.SelectedPart
+        local hit = DaHoodSettings.ApplyPredictionFormula(selectedPart, SelectedPart.Velocity * Vector3.new(1, 0.1, 1))
 
-        if (DaHoodSettings.SilentAim and (k:lower() == "hit" or k:lower() == "target")) then
-            local Hit = SelectedPart.CFrame + (SelectedPart.Velocity * DaHoodSettings.Prediction)
-
-            return (k:lower() == "hit" and Hit or SelectedPart)
-        end
+        -- // Return the modified value
+        return (k:lower() == "hit" and hit or selectedPart)
     end
 
+    -- // Return
     return __index(t, k)
 end)
+
 
 RunService:BindToRenderStep("AimLock", 0, function()
     if (DaHoodSettings.AimLock and Aiming.Check() and UserInputService:IsKeyDown(DaHoodSettings.AimLockKeybind)) then
