@@ -37,13 +37,13 @@ end
 
 local __index
 __index = hookmetamethod(game, "__index", function(t, k)
-    if (t:IsA("Mouse") and (k == "Hit" or k == "Target") and Aiming.Check()) then
+    if (t:IsA("Mouse") and (k:lower() == "hit" or k:lower() == "target")) then
         local SelectedPart = Aiming.SelectedPart
 
-        if (DaHoodSettings.SilentAim and (k == "Hit" or k == "Target")) then
+        if (DaHoodSettings.SilentAim and (k:lower() == "hit" or k:lower() == "target")) then
             local Hit = SelectedPart.CFrame + (SelectedPart.Velocity * DaHoodSettings.Prediction)
 
-            return (k == "Hit" and Hit or SelectedPart)
+            return (k:lower() == "hit" and Hit or SelectedPart)
         end
     end
 
